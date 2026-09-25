@@ -67,7 +67,7 @@ int SDL_RunApp(int argc, char *argv[], SDL_main_func mainFunction, void *reserve
 // Load a launch image using the old UILaunchImageFile-era naming rules.
 static UIImage *SDL_LoadLaunchImageNamed(NSString *name, int screenh)
 {
-    UIInterfaceOrientation curorient = [UIApplication sharedApplication].statusBarOrientation;
+    UIInterfaceOrientation curorient = UIKit_GetInterfaceOrientation();
     UIUserInterfaceIdiom idiom = [UIDevice currentDevice].userInterfaceIdiom;
     UIImage *image = nil;
 
@@ -207,7 +207,7 @@ static UIImage *SDL_LoadLaunchImageNamed(NSString *name, int screenh)
 
 
 #if !defined(SDL_PLATFORM_TVOS) && !defined(SDL_PLATFORM_VISIONOS)
-        UIInterfaceOrientation curorient = [UIApplication sharedApplication].statusBarOrientation;
+        UIInterfaceOrientation curorient = UIKit_GetInterfaceOrientation();
 
         // We always want portrait-oriented size, to match UILaunchImageSize.
         if (screenw > screenh) {

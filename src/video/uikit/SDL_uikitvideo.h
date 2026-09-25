@@ -43,6 +43,10 @@ extern CGRect UIKit_ComputeViewFrame(SDL_Window *window, UIScreen *screen);
 
 extern API_AVAILABLE(ios(13.0)) UIWindowScene *UIKit_GetActiveWindowScene(void);
 
+#if !defined(SDL_PLATFORM_TVOS) && !defined(SDL_PLATFORM_VISIONOS)
+extern UIInterfaceOrientation UIKit_GetInterfaceOrientation(void);
+#endif
+
 extern void UIKit_SetGameControllerInteraction(bool enabled);
 extern void UIKit_SetViewGameControllerInteraction(UIView *view, bool enabled);
 

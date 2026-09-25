@@ -237,7 +237,13 @@ CGRect UIKit_ComputeViewFrame(SDL_Window *window, UIScreen *screen)
      * https://bugzilla.libsdl.org/show_bug.cgi?id=3505
      * https://bugzilla.libsdl.org/show_bug.cgi?id=3465
      * https://forums.developer.apple.com/thread/65337 */
-    UIInterfaceOrientation orient = [UIApplication sharedApplication].statusBarOrientation;
+    UIInterfaceOrientation orient = UIKit_GetInterfaceOrientation();
+    if (@available(iOS 16.0, *)) {
+        UIWindowScene *windowScene = data.uiwindow.windowScene;
+        if (windowScene) {
+            orient = windowScene.effectiveGeometry.interfaceOrientation;
+        }
+    }
     BOOL landscape = UIInterfaceOrientationIsLandscape(orient) ||
                     !(UIKit_GetSupportedOrientations(window) & (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown));
     BOOL fullscreen = CGRectEqualToRect(screen.bounds, frame);
@@ -290,6 +296,20 @@ UIWindowScene *UIKit_GetActiveWindowScene(void)
 
     return nil;
 }
+
+#if !defined(SDL_PLATFORM_TVOS) && !defined(SDL_PLATFORM_VISIONOS)
+UIInterfaceOrientation UIKit_GetInterfaceOrientation(void)
+{
+    if (@available(iOS 16.0, *)) {
+        UIWindowScene *windowScene = UIKit_GetActiveWindowScene();
+        if (windowScene) {
+            return windowScene.effectiveGeometry.interfaceOrientation;
+        }
+    }
+
+    return [UIApplication sharedApplication].statusBarOrientation;
+}
+#endif
 
 void UIKit_SetGameControllerInteraction(bool enabled)
 {
