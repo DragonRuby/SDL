@@ -1,3 +1,4 @@
+This is a hard fork of libSDL that has patches specifically for DragonRuby Game Toolkit. `main` branch is the DR branch.
 
 Simple DirectMedia Layer (SDL for short) is a cross-platform library
 designed to make it easy to write multi-media software, such as games
